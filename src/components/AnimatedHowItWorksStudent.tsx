@@ -153,14 +153,6 @@ export default function AnimatedHowItWorksStudent() {
     };
   }, [isInView, canScroll, activeStep, isMobile]);
 
-  // Mobile touch handlers
-  const handleStepClick = (index: number) => {
-    if (isMobile) {
-      setScrollDirection(index > activeStep ? 'down' : 'up');
-      setActiveStep(index);
-    }
-  };
-
   const slideVariants = {
     enter: (direction: 'up' | 'down') => ({
       y: direction === 'down' ? 60 : -60,

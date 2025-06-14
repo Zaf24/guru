@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu, X, GraduationCap } from "lucide-react";
+import { X, GraduationCap } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import ReactDOM from 'react-dom';
 
