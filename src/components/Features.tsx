@@ -65,7 +65,7 @@ export default function Features() {
               : "Find help in just a few clicks"
             }
           </p>
-          <p className="mt-6 text-lg leading-8 text-gray-600 whitespace-nowrap lg:whitespace-normal">
+          <p className="mt-6 text-lg leading-8 text-gray-600">
             {isTutorPage
               ? "We've simplified the tutoring process so you can focus on what matters - teaching."
               : "Getting the help you need shouldn't be complicated. We've made it simple."

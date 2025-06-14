@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 
 // Import images (using existing images for now)
 import signUpImage from '../assets/images/tutor_signup.png';
@@ -187,6 +188,7 @@ export default function AnimatedHowItWorksStudent() {
   return (
     <section 
       ref={sectionRef}
+      id="how-it-works"
       data-how-it-works
       className={`relative bg-gray-50 ${
         isMobile 
@@ -196,7 +198,7 @@ export default function AnimatedHowItWorksStudent() {
     >
       <div className={`container mx-auto px-4 sm:px-6 ${
         isMobile 
-          ? 'py-8 space-y-8' 
+          ? 'py-8' 
           : 'py-16 md:py-24 h-screen flex flex-col'
       }`}>
         <div className="text-center mb-6 sm:mb-8">
@@ -207,40 +209,47 @@ export default function AnimatedHowItWorksStudent() {
         </div>
 
         {isMobile ? (
-          // Mobile Layout - Vertical Stack
-          <div className="space-y-6 sm:space-y-8">
-            {steps.map((step, index) => (
-              <div 
-                key={index}
-                className={`bg-white rounded-2xl p-4 sm:p-6 shadow-lg transition-all duration-300 ${
-                  index === activeStep ? 'ring-2 ring-orange-200 shadow-xl' : ''
-                }`}
-                onClick={() => handleStepClick(index)}
-              >
-                <div className="flex items-start gap-3 sm:gap-4 mb-4">
-                  <div className="bg-gradient w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base shrink-0">
-                    {index + 1}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg sm:text-xl font-bold mb-2">{step.title}</h3>
-                    <p className="text-gray-600 text-sm sm:text-base leading-relaxed">{step.description}</p>
-                  </div>
-                </div>
-                
-                {/* Mobile image */}
-                <div className="relative bg-[#1A1A1A] rounded-xl sm:rounded-2xl p-2 sm:p-3 shadow-lg">
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/4 h-3 sm:h-4 bg-[#1A1A1A] rounded-b-lg"></div>
-                  <div className="bg-white rounded-lg sm:rounded-xl overflow-hidden">
-                    <img 
-                      src={step.image}
-                      alt={step.title}
-                      className="w-full h-auto"
-                    />
-                  </div>
-                  <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1/4 h-0.5 bg-gray-800 rounded-full"></div>
-                </div>
-              </div>
-            ))}
+          // Mobile Layout - Embla Carousel with Arrows
+          <div className="relative w-full">
+            <Carousel
+              opts={{ align: "start", loop: false }}
+              className="w-full"
+              setApi={api => {
+                if (!api) return;
+                api.on("select", () => {
+                  setActiveStep(api.selectedScrollSnap());
+                });
+              }}
+            >
+              <CarouselPrevious className="left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 border border-orange-200 text-orange-500 hover:bg-orange-100" />
+              <CarouselContent>
+                {steps.map((step, index) => (
+                  <CarouselItem key={index} className="px-2">
+                    <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg flex flex-col items-center">
+                      <div className="bg-gradient w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base mb-4">
+                        {index + 1}
+                      </div>
+                      <div className="w-full flex flex-col items-center">
+                        <h3 className="text-lg sm:text-xl font-bold mb-2 text-center">{step.title}</h3>
+                        <p className="text-gray-600 text-sm sm:text-base leading-relaxed text-center mb-4">{step.description}</p>
+                      </div>
+                      <div className="relative bg-[#1A1A1A] rounded-xl sm:rounded-2xl p-2 sm:p-3 shadow-lg w-full max-w-xs mx-auto">
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/4 h-3 sm:h-4 bg-[#1A1A1A] rounded-b-lg"></div>
+                        <div className="bg-white rounded-lg sm:rounded-xl overflow-hidden">
+                          <img 
+                            src={step.image}
+                            alt={step.title}
+                            className="w-full h-auto"
+                          />
+                        </div>
+                        <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1/4 h-0.5 bg-gray-800 rounded-full"></div>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselNext className="right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 border border-orange-200 text-orange-500 hover:bg-orange-100" />
+            </Carousel>
           </div>
         ) : (
           // Desktop Layout - Side by Side
@@ -310,7 +319,7 @@ export default function AnimatedHowItWorksStudent() {
           {steps.map((_, index) => (
             <button
               key={index}
-              onClick={() => handleStepClick(index)}
+              onClick={() => setActiveStep(index)}
               className={`h-2 rounded-full transition-all duration-300 ${
                 index === activeStep ? 'bg-gradient w-6 sm:w-8' : 'bg-gray-300 w-2'
               } ${isMobile ? 'cursor-pointer' : ''}`}

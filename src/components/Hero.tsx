@@ -7,14 +7,24 @@ export default function Hero() {
   const location = useLocation();
   const isTutorPage = location.pathname === '/tutor';
 
+  const smoothScrollTo = (elementId: string) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   return (
-    <section className="relative pt-32 pb-20 px-4 md:px-8 overflow-hidden">
+    <section className="relative pt-32 pb-20 px-4 md:px-8 overflow-hidden w-full max-w-full">
       {/* Background gradient and pattern */}
       <div className="absolute inset-0 bg-gradient-to-b from-orange-50 to-white">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJub25lIi8+PGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI4MCIgc3Ryb2tlPSIjZmI5MjNjMTAiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==')] opacity-40" />
       </div>
 
-      <div className="container mx-auto relative">
+      <div className="container mx-auto relative w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="text-center md:text-left">
             <div className="inline-flex p-2 bg-white/80 backdrop-blur-sm rounded-full mb-4 shadow-sm">
@@ -62,7 +72,11 @@ export default function Hero() {
                 Find a Tutor Now
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button size="lg" variant="outline">
+              <Button 
+                size="lg" 
+                variant="outline"
+                onClick={() => smoothScrollTo('how-it-works')}
+              >
                 How It Works
               </Button>
             </div>
